@@ -1,0 +1,9 @@
+mkdisk -s=20 -u=m -path=/home/archivos/Discos/Disco1.dsk
+Mkdisk -u=k -s=51200 -path=/home/archivos/Discos/Disco2.dsk -f=BF
+mkdisk -s=10 -path=/home/archivos/Discos/Disco3.dsk
+mkdisk -s=51200 -path="/home/archivos/Discos/mis archivos/Disco4.dsk" -u=K
+mkdisk -s=20 -path="/home/archivos/Discos/mis archivos/Disco5.dsk" -u=M -f=WF
+mkdisk -param=x -s=30 -path=/home/archivos/archivos/fase1/Disco.dsk
+rmdisk -path=/home/archivos/Disco3.dsk
+rmdisk -path=/home/archivos/Discos/Disco3.dsk
+RMdisk -path="/home/archivos/Discos/mis archivos/Disco4.dsk"

@@ -79,7 +79,11 @@ void scanner::functions(string token, vector<string> tks)
     }else if(compare(token, "FDISK")){
         cout << "FUNCION FDISK" << endl;
         disco.fdisk(tks); // [-size=10, -u=m, -path=/home/hola.dsk]
-    }else{
+    }else if(compare(token, "EXEC")){
+        cout << "FUNCION EXEC" << endl;
+        funcion_excec(tks); // [-path=/home/comandos.txt]
+    }
+    else{
         cout << "ERROR" << endl;
         //errores("SYSTEM","El comando ingresado no se reconoce en el sistema \""+token+"\"");
     }
@@ -182,5 +186,58 @@ bool scanner::compare(string a, string b){
 }
 
 
+void scanner::funcion_excec(vector<string> tokens){ // excec -path=/home/comandos.txt
+    
+    string path = "";
+    for (string token:tokens){
+        string tk = token.substr(0,token.find("="));
+        token.erase(0,tk.length()+1);
+        if(compare(tk, "path")){
+            path = token;
+        }
+    }
+    if (path.empty()){
+        errores("EXCEC","No se encontro el path del archivo a ejecutar");
+        return;
+    }
+    excec(path);
+}
 
+void scanner::excec(string path){
+    cout << "Ejecutando archivo: " << path << endl;
+    if (path.substr(0, 1) == "\""){
+        path = path.substr(1, path.length() - 2);
+    }
+    string filename(path);
+    vector <string> comandos;
+    string comando;
+    ifstream input_file(filename);
+    if(!input_file.is_open()){
+        errores("EXCEC","No se pudo abrir el archivo \""+filename+"\"");
+        return;
+    }
+    
+    while(getline(input_file, comando)){
+        comandos.push_back(comando);
+    }
+
+    input_file.close();
+
+    for(string &comando:comandos){
+        string texto = comando;
+        string tk = token(texto);
+        if(texto!=""){
+            if(compare(texto,"PAUSE")){
+                string pause;
+                respuesta("PAUSE","Presione Enter para continuar....");
+                getline(cin,pause);
+                continue;
+            }
+            texto.erase(0,tk.length()+1);
+            vector<string> tks = split_tokens(texto);
+            functions(tk, tks);
+        }
+    }
+    return;
+}
 
